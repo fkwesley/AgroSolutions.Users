@@ -6,10 +6,10 @@ namespace Infrastructure.Repositories
 {
     public class DatabaseLoggerRepository : IDatabaseLoggerRepository
     {
-        private readonly OrdersDbContext _context;
+        private readonly UsersDbContext _context;
 
         // Injeta o DbContext via construtor
-        public DatabaseLoggerRepository(OrdersDbContext context)
+        public DatabaseLoggerRepository(UsersDbContext context)
         {
             _context = context;
         }

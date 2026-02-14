@@ -75,13 +75,13 @@ namespace API.Configurations
         {
             var info = new OpenApiInfo
             {
-                Title = "FCG.Orders.API",
+                Title = "AgroSolutions.Users.API",
                 Version = description.ApiVersion.ToString(),
-                Description = "API for managing game orders",
+                Description = "API for managing farm users",
                 Contact = new OpenApiContact
                 {
-                    Name = "FCG Team",
-                    Email = "support@fcg.com"
+                    Name = "AgroSolutions Team",
+                    Email = "support@agrosolutions.com"
                 }
             };
 

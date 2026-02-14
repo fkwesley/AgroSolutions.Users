@@ -1,6 +1,7 @@
 using Domain.Entities;
-using Domain.Enums;
+using Domain.Repositories;
 using Infrastructure.Context;
+using Moq;
 
 namespace Tests.IntegrationTests.Common;
 
@@ -9,81 +10,82 @@ namespace Tests.IntegrationTests.Common;
 /// </summary>
 public static class DatabaseSeeder
 {
-    public static void SeedTestData(OrdersDbContext context)
+    public static void SeedTestData(UsersDbContext context)
     {
         // Limpa dados existentes
-        context.Orders.RemoveRange(context.Orders);
-        context.Games.RemoveRange(context.Games);
+        context.Users.RemoveRange(context.Users);
         context.SaveChanges();
 
-        var games = new List<Game>
-        {
-            new Game
-            {
-                GameId = 1,
-                Name = "Test Game 1",
-                Price = 59.99
-            },
-            new Game
-            {
-                GameId = 2,
-                Name = "Test Game 2",
-                Price = 39.99
-            },
-            new Game
-            {
-                GameId = 3,
-                Name = "Test Game 3",
-                Price = 29.99
-            }
-        };
+        var mockPasswordHasher = new Mock<IPasswordHasherRepository>();
+        mockPasswordHasher.Setup(x => x.HashPassword(It.IsAny<string>()))
+            .Returns("hashedpassword");
 
-        // Seed Orders
-        var order1 = new Order
+        // Seed Users
+        var user1 = new User
         {
-            OrderId = 1,
-            UserId = "test-user-1",
-            UserEmail = "user1@test.com",
-            Status = OrderStatus.PendingPayment,
-            PaymentMethod = PaymentMethod.Pix,
-            CreatedAt = DateTime.UtcNow.AddDays(-2),
-            ListOfGames = games
+            UserId = "TEST-USER-1",
+            Name = "Test User 1",
+            Email = "user1@test.com",
+            IsActive = true,
+            IsAdmin = false,
+            IsTechAccount = false,
+            CreatedAt = DateTime.UtcNow.AddDays(-30)
         };
+        user1.SetPassword("Password123!", mockPasswordHasher.Object);
 
-        var order2 = new Order
+        var user2 = new User
         {
-            OrderId = 2,
-            UserId = "test-user-2",
-            UserEmail = "user2@test.com",
-            Status = OrderStatus.Paid,
-            PaymentMethod = PaymentMethod.Pix,
-            CreatedAt = DateTime.UtcNow.AddDays(-1),
-            ListOfGames = games
+            UserId = "TEST-USER-2",
+            Name = "Test User 2",
+            Email = "user2@test.com",
+            IsActive = true,
+            IsAdmin = true,
+            IsTechAccount = false,
+            CreatedAt = DateTime.UtcNow.AddDays(-15)
         };
+        user2.SetPassword("Password123!", mockPasswordHasher.Object);
 
-        context.Orders.AddRange(order1, order2);
+        var user3 = new User
+        {
+            UserId = "TEST-USER-3",
+            Name = "Test User 3 (Inactive)",
+            Email = "user3@test.com",
+            IsActive = false,
+            IsAdmin = false,
+            IsTechAccount = false,
+            CreatedAt = DateTime.UtcNow.AddDays(-60)
+        };
+        user3.SetPassword("Password123!", mockPasswordHasher.Object);
+
+        context.Users.AddRange(user1, user2, user3);
         context.SaveChanges();
     }
 
-    public static Order CreateTestOrder(string userId = "test-user", string email = "test@example.com")
+    public static User CreateTestUser(
+        string userId = "TEST-USER", 
+        string name = "Test User",
+        string email = "test@example.com",
+        bool isActive = true,
+        bool isAdmin = false)
     {
-        return new Order
+        var mockPasswordHasher = new Mock<IPasswordHasherRepository>();
+        mockPasswordHasher.Setup(x => x.HashPassword(It.IsAny<string>()))
+            .Returns("hashedpassword");
+
+        var user = new User
         {
-            UserId = userId,
-            UserEmail = email,
-            Status = OrderStatus.PendingPayment,
-            PaymentMethod = PaymentMethod.Pix,
+            UserId = userId.ToUpper(),
+            Name = name,
+            Email = email.ToLower(),
+            IsActive = isActive,
+            IsAdmin = isAdmin,
+            IsTechAccount = false,
             CreatedAt = DateTime.UtcNow
         };
-    }
 
-    public static Game CreateTestGame(int id = 1, string name = "Test Game", decimal price = 49.99m)
-    {
-        return new Game
-        {
-            GameId = id,
-            Name = name,
-            Price = (double)price
-        };
+        user.SetPassword("Password123!", mockPasswordHasher.Object);
+
+        return user;
     }
 }
+

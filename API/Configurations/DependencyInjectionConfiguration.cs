@@ -1,17 +1,11 @@
-using Application.EventHandlers;
+
 using Application.Interfaces;
 using Application.Services;
 using Application.Settings;
-using Domain.Events;
 using Domain.Repositories;
-using Elastic.Apm.NetCoreAll;
-using FCG.Application.Services;
 using Infrastructure.Context;
-using Infrastructure.Factories;
-using Infrastructure.Http.Clients;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
-using Infrastructure.Services;
 using Infrastructure.Services.HealthCheck;
 using Infrastructure.Services.Logging;
 using Microsoft.EntityFrameworkCore;
@@ -33,8 +27,11 @@ public static class DependencyInjectionConfiguration
 {
     public static WebApplicationBuilder AddDependencyInjection(this WebApplicationBuilder builder)
     {
-        var connectionString = builder.Configuration.GetConnectionString("FCGOrdersDbConnection")
-            ?? throw new ArgumentNullException("Connection string 'FCGOrdersDbConnection' not found.");
+        var connectionString = builder.Configuration.GetConnectionString("AgroUsersDbConnection")
+            ?? throw new ArgumentNullException("Connection string 'AgroUsersDbConnection' not found.");
+
+        var jwtKey = builder.Configuration.GetValue<string>("Jwt:Key");
+        var jwtIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer");
 
         // Settings
         builder.Services.Configure<LoggerSettings>(builder.Configuration.GetSection("LoggerSettings"));
@@ -42,9 +39,10 @@ public static class DependencyInjectionConfiguration
         builder.Services.Configure<ElasticLoggerSettings>(builder.Configuration.GetSection("ElasticLogs"));
 
         // Domain Services
-        builder.Services.AddScoped<IOrderService, OrderService>();
-        builder.Services.AddScoped<IGameService, GameService>();
-        
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddSingleton<IAuthService>(new AuthService(jwtKey, jwtIssuer));
+        builder.Services.AddSingleton<IPasswordHasherRepository, PasswordHasherRepository>();
+
         // Health Check Services
         // #SOLID - Open/Closed Principle (OCP)
         // Para adicionar novo health check:
@@ -53,35 +51,17 @@ public static class DependencyInjectionConfiguration
         // 3. HealthCheckService descobre automaticamente via IEnumerable<IHealthCheck>
         builder.Services.AddScoped<IHealthCheckService, HealthCheckService>();
         builder.Services.AddScoped<IHealthCheck, DatabaseHealthCheck>();
-        builder.Services.AddScoped<IHealthCheck, GamesApiHealthCheck>();
-        builder.Services.AddScoped<IHealthCheck, RabbitMQHealthCheck>();
         builder.Services.AddScoped<IHealthCheck, ElasticsearchHealthCheck>();
         builder.Services.AddScoped<IHealthCheck, SystemHealthCheck>();
-
-        // Domain Event Dispatcher & Handlers
-        builder.Services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
-        builder.Services.AddScoped<IDomainEventHandler<OrderCreatedEvent>, OrderCreatedEventHandler>();
-        builder.Services.AddScoped<IDomainEventHandler<PaymentMethodSetEvent>, PaymentMethodSetEventHandler>();
-        builder.Services.AddScoped<IDomainEventHandler<OrderStatusChangedEvent>, OrderStatusChangedEventHandler>();
 
         // Logger Services
         ConfigureLoggerService(builder);
 
-        // Message Publishers
-        builder.Services.AddSingleton<IMessagePublisher, RabbitMQPublisher>();
-        builder.Services.AddSingleton<IMessagePublisher, ServiceBusPublisher>();
-        builder.Services.AddSingleton<RabbitMQPublisher>();
-        builder.Services.AddSingleton<ServiceBusPublisher>();
-        builder.Services.AddSingleton<IMessagePublisherFactory, MessagePublisherFactory>();
-
         // Repositories
-        builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
-        // HTTP Clients
-        builder.Services.AddScoped<IGamesApiClient, GamesApiClient>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         // Database Context
-        builder.Services.AddDbContext<OrdersDbContext>(options =>
+        builder.Services.AddDbContext<UsersDbContext>(options =>
         {
             options.UseSqlServer(connectionString, sqlOptions =>
             {

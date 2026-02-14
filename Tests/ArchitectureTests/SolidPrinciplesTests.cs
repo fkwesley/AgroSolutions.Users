@@ -16,7 +16,7 @@ public class SolidPrinciplesTests
         var maxMethodsPerService = 15;
         
         // Act
-        var types = Types.InAssembly(typeof(Application.Interfaces.IOrderService).Assembly)
+        var types = Types.InAssembly(typeof(Application.Interfaces.IUserService).Assembly)
             .That()
             .ResideInNamespace("Application.Services")
             .And()
@@ -40,7 +40,7 @@ public class SolidPrinciplesTests
     public void Services_Should_DependOn_Interfaces_Not_Implementations()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Application.Services.OrderService).Assembly)
+        var result = Types.InAssembly(typeof(Application.Services.UserService).Assembly)
             .That()
             .ResideInNamespace("Application.Services")
             .And()
@@ -58,7 +58,7 @@ public class SolidPrinciplesTests
     public void Controllers_Should_DependOn_Interfaces()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var result = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .ShouldNot()
@@ -81,7 +81,7 @@ public class SolidPrinciplesTests
         var maxMethodsPerInterface = 12;
         
         // Act
-        var types = Types.InAssembly(typeof(Application.Interfaces.IOrderService).Assembly)
+        var types = Types.InAssembly(typeof(Application.Interfaces.IUserService).Assembly)
             .That()
             .AreInterfaces()
             .GetTypes();
@@ -103,7 +103,7 @@ public class SolidPrinciplesTests
     public void Domain_Entities_Should_NotBe_Sealed()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var result = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .That()
             .ResideInNamespace("Domain.Entities")
             .And()

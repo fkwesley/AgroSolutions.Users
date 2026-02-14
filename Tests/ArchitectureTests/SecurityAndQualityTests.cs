@@ -11,7 +11,7 @@ public class SecurityAndQualityTests
     public void Controllers_Should_Have_Authorization_Attribute()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var result = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .And()
@@ -20,20 +20,22 @@ public class SecurityAndQualityTests
             .HaveNameEndingWith("Controller")
             .And()
             .DoNotHaveName("HealthController") // Health checks são públicos
+            .And()
+            .DoNotHaveName("AuthController") // AuthController lida com login e deve ser público
             .Should()
             .HaveCustomAttribute(typeof(Microsoft.AspNetCore.Authorization.AuthorizeAttribute))
             .GetResult();
 
         // Assert
         Assert.True(result.IsSuccessful,
-            $"All controllers (except HealthController) should have [Authorize] attribute for security. Violations: {string.Join(", ", result.FailingTypeNames ?? [])}");
+            $"All controllers (except HealthController and AuthController) should have [Authorize] attribute for security. Violations: {string.Join(", ", result.FailingTypeNames ?? [])}");
     }
 
     [Fact]
     public void DTOs_Should_NotHave_Public_Fields()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Application.DTO.Order.OrderResponse).Assembly)
+        var types = Types.InAssembly(typeof(Application.DTO.User.UserResponse).Assembly)
             .That()
             .ResideInNamespaceMatching("Application.DTO.*")
             .And()
@@ -60,7 +62,7 @@ public class SecurityAndQualityTests
     public void Domain_Entities_Should_Favor_Encapsulation()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var types = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .That()
             .ResideInNamespace("Domain.Entities")
             .And()
@@ -94,7 +96,7 @@ public class SecurityAndQualityTests
     public void Services_Should_NotUse_Concrete_DbContext_Directly()
     {
         // Arrange & Act
-        var types = Types.InAssembly(typeof(Application.Services.OrderService).Assembly)
+        var types = Types.InAssembly(typeof(Application.Services.UserService).Assembly)
             .That()
             .ResideInNamespace("Application.Services")
             .And()
@@ -116,7 +118,7 @@ public class SecurityAndQualityTests
     public void Repositories_Should_NotBe_Public_Outside_Infrastructure()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Infrastructure.Context.OrdersDbContext).Assembly)
+        var result = Types.InAssembly(typeof(Infrastructure.Context.UsersDbContext).Assembly)
             .That()
             .ResideInNamespaceMatching("Infrastructure.Repositories.*")
             .And()
@@ -140,7 +142,7 @@ public class SecurityAndQualityTests
     public void Domain_Should_NotContain_DataAnnotations()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var result = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .That()
             .ResideInNamespace("Domain.Entities")
             .ShouldNot()
@@ -156,7 +158,7 @@ public class SecurityAndQualityTests
     public void Application_Should_MinimizeReference_To_AspNetCore()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Application.Interfaces.IOrderService).Assembly)
+        var result = Types.InAssembly(typeof(Application.Interfaces.IUserService).Assembly)
             .That()
             .ResideInNamespaceStartingWith("Application")
             .And()

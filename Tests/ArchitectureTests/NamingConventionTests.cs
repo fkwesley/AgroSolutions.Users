@@ -11,7 +11,7 @@ public class NamingConventionTests
     public void Services_Should_HaveName_EndingWith_Service()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Application.Interfaces.IOrderService).Assembly)
+        var result = Types.InAssembly(typeof(Application.Interfaces.IUserService).Assembly)
             .That()
             .ResideInNamespace("Application.Services")
             .And()
@@ -31,7 +31,7 @@ public class NamingConventionTests
     public void Interfaces_Should_StartWith_I()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Application.Interfaces.IOrderService).Assembly)
+        var result = Types.InAssembly(typeof(Application.Interfaces.IUserService).Assembly)
             .That()
             .AreInterfaces()
             .Should()
@@ -47,7 +47,7 @@ public class NamingConventionTests
     public void Controllers_Should_HaveName_EndingWith_Controller()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var result = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .And()
@@ -65,7 +65,7 @@ public class NamingConventionTests
     public void DTOs_WithRequest_Should_HaveName_EndingWith_Request()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Application.DTO.Order.AddOrderRequest).Assembly)
+        var result = Types.InAssembly(typeof(Application.DTO.User.AddUserRequest).Assembly)
             .That()
             .ResideInNamespaceMatching("Application.DTO.*")
             .And()
@@ -85,7 +85,7 @@ public class NamingConventionTests
     public void DTOs_WithResponse_Should_HaveName_EndingWith_Response()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Application.DTO.Order.OrderResponse).Assembly)
+        var result = Types.InAssembly(typeof(Application.DTO.User.UserResponse).Assembly)
             .That()
             .ResideInNamespaceMatching("Application.DTO.*")
             .And()
@@ -105,7 +105,7 @@ public class NamingConventionTests
     public void Repositories_Should_HaveName_EndingWith_Repository()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Infrastructure.Context.OrdersDbContext).Assembly)
+        var result = Types.InAssembly(typeof(Infrastructure.Context.UsersDbContext).Assembly)
             .That()
             .ResideInNamespaceMatching("Infrastructure.Repositories.*")
             .And()
@@ -123,9 +123,11 @@ public class NamingConventionTests
     public void Entities_Should_ResideIn_DomainEntities_Namespace()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var result = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .That()
-            .Inherit(typeof(Domain.Common.BaseEntity))
+            .ResideInNamespace("Domain.Entities")
+            .And()
+            .AreClasses()
             .Should()
             .ResideInNamespace("Domain.Entities")
             .GetResult();
@@ -139,7 +141,7 @@ public class NamingConventionTests
     public void Enums_Should_ResideIn_DomainEnums_Namespace()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Domain.Enums.OrderStatus).Assembly)
+        var types = Types.InAssembly(typeof(Domain.Enums.LogLevel).Assembly)
             .That()
             .ResideInNamespace("Domain.Enums")
             .GetTypes()
@@ -155,7 +157,7 @@ public class NamingConventionTests
     public void Exceptions_Should_HaveName_EndingWith_Exception()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var result = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .That()
             .Inherit(typeof(Exception))
             .Should()

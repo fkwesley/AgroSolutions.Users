@@ -11,7 +11,7 @@ public class PerformanceAndBestPracticesTests
     public void Services_Should_Be_Async()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Application.Services.OrderService).Assembly)
+        var types = Types.InAssembly(typeof(Application.Services.UserService).Assembly)
             .That()
             .ResideInNamespace("Application.Services")
             .And()
@@ -27,7 +27,8 @@ public class PerformanceAndBestPracticesTests
                            !m.IsSpecialName && 
                            m.DeclaringType == type &&
                            m.ReturnType != typeof(void) &&
-                           !m.ReturnType.Name.Contains("Task"))
+                           !m.ReturnType.Name.Contains("Task") &&
+                           !m.Name.Contains("Generate")) // Métodos de geração (como GenerateToken) podem ser síncronos
                 .Select(m => $"{type.Name}.{m.Name}")
                 .ToList();
 
@@ -42,7 +43,7 @@ public class PerformanceAndBestPracticesTests
     public void Async_Methods_Should_Have_Async_Suffix()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Application.Services.OrderService).Assembly)
+        var types = Types.InAssembly(typeof(Application.Services.UserService).Assembly)
             .That()
             .ResideInNamespace("Application.Services")
             .And()
@@ -76,7 +77,7 @@ public class PerformanceAndBestPracticesTests
     public void Domain_Should_NotReference_LinqToEntities()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var result = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .ShouldNot()
             .HaveDependencyOn("System.Linq.IQueryable")
             .GetResult();
@@ -90,7 +91,7 @@ public class PerformanceAndBestPracticesTests
     public void Controllers_Should_Not_Return_IQueryable()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var types = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .And()
@@ -119,7 +120,7 @@ public class PerformanceAndBestPracticesTests
     public void DTOs_Should_NotContain_Business_Logic()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Application.DTO.Order.OrderResponse).Assembly)
+        var types = Types.InAssembly(typeof(Application.DTO.User.UserResponse).Assembly)
             .That()
             .ResideInNamespaceMatching("Application.DTO.*")
             .And()
@@ -154,7 +155,7 @@ public class PerformanceAndBestPracticesTests
     public void Services_Should_Be_Sealed_Or_Abstract()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Application.Services.OrderService).Assembly)
+        var result = Types.InAssembly(typeof(Application.Services.UserService).Assembly)
             .That()
             .ResideInNamespace("Application.Services")
             .And()

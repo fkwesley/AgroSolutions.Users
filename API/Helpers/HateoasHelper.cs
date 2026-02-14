@@ -1,6 +1,5 @@
 using Application.DTO.Common;
-using Application.DTO.Order;
-using Domain.Enums;
+using Application.DTO.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,144 +13,68 @@ namespace API.Helpers
     /// garantindo URLs corretas e consistentes.
     /// 
     /// ?? USO:
-    /// var links = HateoasHelper.CreateOrderLinks(urlHelper, orderId, version);
-    /// orderResponse.Links = links;
+    /// var links = HateoasHelper.CreateUserLinks(urlHelper, userId, version);
+    /// userResponse.Links = links;
     /// </summary>
     public static class HateoasHelper
     {
         /// <summary>
-        /// Cria links HATEOAS para um pedido específico.
+        /// Cria links HATEOAS para um usuário específico.
         /// </summary>
         /// <param name="urlHelper">Helper para gerar URLs</param>
-        /// <param name="orderId">ID do pedido</param>
-        /// <param name="version">Versão da API (ex: "2.0")</param>
-        /// <param name="status">Status atual do pedido (para links condicionais)</param>
+        /// <param name="userId">ID do usuário</param>
+        /// <param name="version">Versão da API (ex: "1.0")</param>
+        /// <param name="isActive">Status atual do usuário (para links condicionais)</param>
         /// <returns>Lista de links HATEOAS</returns>
-        public static List<Link> CreateOrderLinks(IUrlHelper urlHelper, int orderId, string version, OrderStatus? status = null)
+        public static List<Link> CreateUserLinks(IUrlHelper urlHelper, string userId, string version, bool? isActive = null)
         {
             var links = new List<Link>
             {
                 // Self - Link para o próprio recurso
                 new Link(
-                    href: urlHelper.Link("GetOrderById", new { id = orderId, version }) ?? string.Empty,
+                    href: urlHelper.Link("GetUserById", new { id = userId, version }) ?? string.Empty,
                     rel: "self",
                     method: "GET"
                 ),
-                
-                // Update - Link para atualizar o status (apenas se não estiver finalizado)
+
+                // Update - Link para atualizar o usuário
                 new Link(
-                    href: urlHelper.Link("UpdateOrderStatus", new { id = orderId, version }) ?? string.Empty,
+                    href: urlHelper.Link("UpdateUser", new { userId = userId, version }) ?? string.Empty,
                     rel: "update",
-                    method: "PATCH"
+                    method: "PUT"
                 ),
-                
-                // Delete - Link para deletar (apenas se não estiver pago/liberado)
+
+                // Delete - Link para deletar
                 new Link(
-                    href: urlHelper.Link("DeleteOrder", new { id = orderId, version }) ?? string.Empty,
+                    href: urlHelper.Link("DeleteUser", new { userId = userId, version }) ?? string.Empty,
                     rel: "delete",
                     method: "DELETE"
                 ),
-                
-                // All - Link para lista de todos os pedidos
+
+                // All - Link para lista de todos os usuários
                 new Link(
-                    href: urlHelper.Link("GetOrders", new { version }) ?? string.Empty,
+                    href: urlHelper.Link("GetAllUsers", new { version }) ?? string.Empty,
                     rel: "all",
                     method: "GET"
                 )
             };
 
             // Links condicionais baseados no status
-            if (status == OrderStatus.PendingPayment)
+            if (isActive == false)
             {
                 links.Add(new Link(
-                    href: urlHelper.Link("UpdateOrderStatus", new { id = orderId, version }) ?? string.Empty,
-                    rel: "pay",
-                    method: "PATCH"
+                    href: urlHelper.Link("UpdateUser", new { userId = userId, version }) ?? string.Empty,
+                    rel: "activate",
+                    method: "PUT"
                 ));
             }
 
-            if (status == OrderStatus.Paid)
+            if (isActive == true)
             {
                 links.Add(new Link(
-                    href: urlHelper.Link("UpdateOrderStatus", new { id = orderId, version }) ?? string.Empty,
-                    rel: "release",
-                    method: "PATCH"
-                ));
-            }
-
-            return links;
-        }
-
-        /// <summary>
-        /// Cria links HATEOAS para paginação.
-        /// </summary>
-        public static List<Link> CreatePaginationLinks<T>(
-            IUrlHelper urlHelper,
-            PagedResponse<T> pagedResponse,
-            string routeName,
-            string version)
-        {
-            var links = new List<Link>
-            {
-                // Self - Página atual
-                new Link(
-                    href: urlHelper.Link(routeName, new { 
-                        version, 
-                        page = pagedResponse.CurrentPage, 
-                        pageSize = pagedResponse.PageSize 
-                    }) ?? string.Empty,
-                    rel: "self",
-                    method: "GET"
-                ),
-                
-                // First - Primeira página
-                new Link(
-                    href: urlHelper.Link(routeName, new { 
-                        version, 
-                        page = 1, 
-                        pageSize = pagedResponse.PageSize 
-                    }) ?? string.Empty,
-                    rel: "first",
-                    method: "GET"
-                ),
-                
-                // Last - Última página
-                new Link(
-                    href: urlHelper.Link(routeName, new { 
-                        version, 
-                        page = pagedResponse.TotalPages, 
-                        pageSize = pagedResponse.PageSize 
-                    }) ?? string.Empty,
-                    rel: "last",
-                    method: "GET"
-                )
-            };
-
-            // Previous - Página anterior (se existir)
-            if (pagedResponse.HasPrevious)
-            {
-                links.Add(new Link(
-                    href: urlHelper.Link(routeName, new { 
-                        version, 
-                        page = pagedResponse.CurrentPage - 1, 
-                        pageSize = pagedResponse.PageSize 
-                    }) ?? string.Empty,
-                    rel: "previous",
-                    method: "GET"
-                ));
-            }
-
-            // Next - Próxima página (se existir)
-            if (pagedResponse.HasNext)
-            {
-                links.Add(new Link(
-                    href: urlHelper.Link(routeName, new { 
-                        version, 
-                        page = pagedResponse.CurrentPage + 1, 
-                        pageSize = pagedResponse.PageSize 
-                    }) ?? string.Empty,
-                    rel: "next",
-                    method: "GET"
+                    href: urlHelper.Link("UpdateUser", new { userId = userId, version }) ?? string.Empty,
+                    rel: "deactivate",
+                    method: "PUT"
                 ));
             }
 
@@ -159,21 +82,21 @@ namespace API.Helpers
         }
 
         /// <summary>
-        /// Adiciona links HATEOAS a um pedido.
+        /// Adiciona links HATEOAS a um usuário.
         /// </summary>
-        public static void AddLinksToOrder(OrderResponse order, IUrlHelper urlHelper, string version)
+        public static void AddLinksToUser(UserResponse user, IUrlHelper urlHelper, string version)
         {
-            order.Links = CreateOrderLinks(urlHelper, order.OrderId, version, order.Status);
+            user.Links = CreateUserLinks(urlHelper, user.UserId, version, user.IsActive);
         }
 
         /// <summary>
-        /// Adiciona links HATEOAS a uma coleção de pedidos.
+        /// Adiciona links HATEOAS a uma coleção de usuários.
         /// </summary>
-        public static void AddLinksToOrders(IEnumerable<OrderResponse> orders, IUrlHelper urlHelper, string version)
+        public static void AddLinksToUsers(IEnumerable<UserResponse> users, IUrlHelper urlHelper, string version)
         {
-            foreach (var order in orders)
+            foreach (var user in users)
             {
-                AddLinksToOrder(order, urlHelper, version);
+                AddLinksToUser(user, urlHelper, version);
             }
         }
 
@@ -195,11 +118,11 @@ namespace API.Helpers
                     rel: "self",
                     method: "GET"
                 ),
-                
-                // Orders - Link para endpoints principais
+
+                // Users - Link para endpoints principais
                 new Link(
-                    href: $"{baseUrl}/api/v{version}/orders",
-                    rel: "orders",
+                    href: $"{baseUrl}/api/v{version}/users",
+                    rel: "users",
                     method: "GET"
                 ),
 
