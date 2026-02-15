@@ -28,7 +28,7 @@ namespace API.Controllers.v1
         /// Returns a JWT token for authentication.
         /// </summary>
         /// <returns>JWT Token</returns>
-        [HttpPost("Login")]
+        [HttpPost("login")]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]

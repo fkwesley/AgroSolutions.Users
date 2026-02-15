@@ -1,4 +1,4 @@
-﻿# 🎮 API.Template - Clean Architecture & Best Practices
+﻿# 🎮 AgroSolutions.Users - Clean Architecture & Best Practices
 
 > Template de API RESTful moderna implementando Clean Architecture, SOLID, DDD e Event-Driven Architecture.
 
@@ -113,7 +113,7 @@ Nível 0: POX
 ## 📁 Estrutura do Projeto
 
 ```
-API.Template/
+AgroSolutions.Users/
 │
 ├── 📂 API/                          # Presentation Layer
 │   ├── Controllers/v1, v2/             # Endpoints versionados
@@ -160,7 +160,7 @@ API.Template/
 ├── 📂 .github/                      # GitHub workflows (CI/CD)
 ├── .gitignore                       # Arquivos ignorados pelo Git
 ├── Dockerfile                       # Imagem Docker da API
-├── API.Template.sln                 # Solution .NET
+├── AgroSolutions.Users.sln                 # Solution .NET
 ```
 
 ---
@@ -259,8 +259,8 @@ A aplicação possui pipelines de CI/CD completos para automação de build, tes
 
 ```bash
 # 1. Clonar
-git clone https://github.com/fkwesley/API.Template.git
-cd API.Template
+git clone https://github.com/fkwesley/AgroSolutions.Users.git
+cd AgroSolutions.Users
 
 # 2. Restaurar dependências
 dotnet restore

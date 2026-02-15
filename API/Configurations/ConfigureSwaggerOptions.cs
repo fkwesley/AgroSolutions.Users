@@ -77,7 +77,7 @@ namespace API.Configurations
             {
                 Title = "AgroSolutions.Users.API",
                 Version = description.ApiVersion.ToString(),
-                Description = "API for managing farm users",
+                Description = "Farm Users Management",
                 Contact = new OpenApiContact
                 {
                     Name = "AgroSolutions Team",

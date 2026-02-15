@@ -42,6 +42,9 @@ namespace Application.Services
         {
             var userFound = await _userRepository.GetUserByIdAsync(userId);
 
+            if (userFound == null)
+                throw new ValidationException("User not found.");
+
             return userFound.ToResponse();
         }
 

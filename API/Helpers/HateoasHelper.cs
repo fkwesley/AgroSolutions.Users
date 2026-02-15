@@ -32,7 +32,7 @@ namespace API.Helpers
             {
                 // Self - Link para o próprio recurso
                 new Link(
-                    href: urlHelper.Link("GetUserById", new { id = userId, version }) ?? string.Empty,
+                    href: urlHelper.Link("GetUserById", new { userId = userId, version }) ?? string.Empty,
                     rel: "self",
                     method: "GET"
                 ),

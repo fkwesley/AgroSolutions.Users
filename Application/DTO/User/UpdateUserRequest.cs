@@ -1,14 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Application.DTO.User
 {
     public class UpdateUserRequest
     {
-        [Required]
         [MaxLength(20)]
         [JsonIgnore]
-        public required string UserId { get; set; }
+        public string? UserId { get; set; }
         [Required]
         [MaxLength(50)]
         public required string Name { get; set; }

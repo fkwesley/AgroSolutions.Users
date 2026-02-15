@@ -1,9 +1,11 @@
-﻿using API.Models;
+﻿using API.Helpers;
+using API.Models;
 using Application.DTO.User;
 using Application.Interfaces;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace API.Controllers.v1
 {
@@ -18,9 +20,9 @@ namespace API.Controllers.v1
     {
         private readonly IUserService _userService;
 
-        public UsersController(IUserService usersService)
+        public UsersController(IUserService userService)
         {
-            _userService = usersService;
+            _userService = userService;
         }
 
         #region GETS
@@ -37,6 +39,8 @@ namespace API.Controllers.v1
         public async Task<IActionResult> GetAll()
         {
             var users = await _userService.GetAllUsersAsync();
+            var version = HttpContext.Request.RouteValues["version"]?.ToString() ?? "1.0";
+            HateoasHelper.AddLinksToUsers(users, Url, version);
             return Ok(users);
         }
 
@@ -44,13 +48,18 @@ namespace API.Controllers.v1
         /// Returns a user by id.
         /// </summary>
         /// <returns>Object User</returns>
-        [HttpGet("{id}", Name = "GetUserById")]
+        [HttpGet("{userId}", Name = "GetUserById")]
         [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetById(string userId)
         {
-            var user = await _userService.GetUserByIdAsync(id);
+            var user = await _userService.GetUserByIdAsync(userId);
+
+            var version = HttpContext.Request.RouteValues["version"]?.ToString() ?? "1.0";
+            if (user is not null)
+                HateoasHelper.AddLinksToUser(user, Url, version);
+
             return Ok(user);
         }
         #endregion
@@ -68,12 +77,12 @@ namespace API.Controllers.v1
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Add([FromBody] AddUserRequest userRequest)
         {
-            // getting user_id and user_email from context (provided by token)
-            userRequest.UserId = HttpContext.User?.FindFirst("user_id")?.Value ?? "anonymous"; // getting user_id from context (provided by token)
-            userRequest.Email = HttpContext.User?.FindFirst("user_email")?.Value; 
-
             var addedUser = await _userService.AddUserAsync(userRequest);
-            return CreatedAtAction(nameof(GetById), new { id = addedUser.UserId }, addedUser);
+
+            var version = HttpContext.Request.RouteValues["version"]?.ToString() ?? "1.0";
+            HateoasHelper.AddLinksToUser(addedUser, Url, version);
+
+            return CreatedAtAction(nameof(Add), new { userId = addedUser.UserId, version }, addedUser);
         }
         #endregion
 
@@ -93,6 +102,11 @@ namespace API.Controllers.v1
         {
             userRequest.UserId = userId;
             var updatedUser = await _userService.UpdateUserAsync(userRequest);
+
+            var version = HttpContext.Request.RouteValues["version"]?.ToString() ?? "1.0";
+            if (updatedUser is not null)
+                HateoasHelper.AddLinksToUser(updatedUser, Url, version);
+
             return Ok(updatedUser);
         }
         #endregion
