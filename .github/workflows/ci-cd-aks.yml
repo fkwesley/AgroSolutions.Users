@@ -75,36 +75,28 @@ jobs:
   #         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
   #     - name: Set AKS context
-  #       run: az aks get-credentials --resource-group RG_FCG --name aks-fcg-orders --overwrite-existing
+  #       run: az aks get-credentials --resource-group RG_AGRO --name aks-agro-users --overwrite-existing
         
   #     - name: Apply Namespaces
   #       run: kubectl apply -f Kubernetes/namespace.yaml
         
   #     - name: Apply ConfigMap and Secret
   #       run: |
-  #            export FCG_DB_CONNECTION_STRING="${{ secrets.FCG_DB_CONNECTION_STRING }}"
-  #            export FCG_SERVICEBUS_CONNECTION_STRING="${{ secrets.FCG_SERVICEBUS_CONNECTION_STRING }}"
-  #            export FCG_RABBITMQ_CONNECTION_STRING="${{ secrets.FCG_RABBITMQ_CONNECTION_STRING }}" 
-  #            export GAMES_API_ENDPOINT="${{ vars.GAMES_API_ENDPOINT }}"
-  #            export GAMES_API_AUTH_TOKEN="${{ secrets.GAMES_API_AUTH_TOKEN }}"
-  #            export GAMES_API_SUBSCRIPTION_KEY="${{ secrets.GAMES_API_SUBSCRIPTION_KEY }}"
-  #            export NEW_RELIC_LICENSE_KEY="${{ secrets.NEW_RELIC_LICENSE_KEY }}"
-  #            export NEW_RELIC_ENABLED="${{ vars.NEW_RELIC_ENABLED }}"
-  #            export NEW_RELIC_ENDPOINT="${{ vars.NEW_RELIC_ENDPOINT }}"
+  #            export AGRODB_CONNECTIONSTRING="${{ secrets.AGRODB_CONNECTIONSTRING }}"
   #            export APM_SERVICE_NAME="${{ vars.APM_SERVICE_NAME }}"
   #            export ELASTIC_APM_ENABLED="${{ vars.ELASTIC_APM_ENABLED }}"
   #            export ELASTIC_APM_SERVER_URL="${{ vars.ELASTIC_APM_SERVER_URL }}"
   #            export ELASTIC_APM_SECRET_TOKEN="${{ secrets.ELASTIC_APM_SECRET_TOKEN }}"
   #            export ENV="${{ vars.ENV }}"
-  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n fcg-orders-dev -f -            # aplica o configmap com substituição de variáveis
-  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n fcg-orders-dev -f -               # aplica o secret com substituição de variáveis
+  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n agro-users-dev -f -            # aplica o configmap com substituição de variáveis
+  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n agro-users-dev -f -               # aplica o secret com substituição de variáveis
 
   #     - name: Deploy to AKS - DEV
   #       run: |
   #            export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"           # tag da imagem Docker
-  #            envsubst < Kubernetes/deployment.yaml | kubectl apply -n fcg-orders-dev -f -           # aplica o deployment com substituição de variáveis
-  #            kubectl apply -f Kubernetes/service.yaml -n fcg-orders-dev                             # aplica o service
-  #            kubectl rollout status deployment/fcg-orders -n fcg-orders-dev                         # aguarda o rollout completar
+  #            envsubst < Kubernetes/deployment.yaml | kubectl apply -n agro-users-dev -f -           # aplica o deployment com substituição de variáveis
+  #            kubectl apply -f Kubernetes/service.yaml -n agro-users-dev                             # aplica o service
+  #            kubectl rollout status deployment/agro-users -n agro-users-dev                         # aguarda o rollout completar
              
   # deploy-uat:
   #   needs:
@@ -123,36 +115,28 @@ jobs:
   #         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
   #     - name: Set AKS context
-  #       run: az aks get-credentials --resource-group RG_FCG --name aks-fcg-orders --overwrite-existing
+  #       run: az aks get-credentials --resource-group RG_AGRO --name aks-agro-users --overwrite-existing
         
   #     - name: Apply Namespaces
   #       run: kubectl apply -f Kubernetes/namespace.yaml
         
   #     - name: Apply ConfigMap and Secret
   #       run: |
-  #            export FCG_DB_CONNECTION_STRING="${{ secrets.FCG_DB_CONNECTION_STRING }}"
-  #            export FCG_SERVICEBUS_CONNECTION_STRING="${{ secrets.FCG_SERVICEBUS_CONNECTION_STRING }}"
-  #            export FCG_RABBITMQ_CONNECTION_STRING="${{ secrets.FCG_RABBITMQ_CONNECTION_STRING }}" 
-  #            export GAMES_API_ENDPOINT="${{ vars.GAMES_API_ENDPOINT }}"
-  #            export GAMES_API_AUTH_TOKEN="${{ secrets.GAMES_API_AUTH_TOKEN }}"
-  #            export GAMES_API_SUBSCRIPTION_KEY="${{ secrets.GAMES_API_SUBSCRIPTION_KEY }}"
-  #            export NEW_RELIC_LICENSE_KEY="${{ secrets.NEW_RELIC_LICENSE_KEY }}"
-  #            export NEW_RELIC_ENABLED="${{ vars.NEW_RELIC_ENABLED }}"
-  #            export NEW_RELIC_ENDPOINT="${{ vars.NEW_RELIC_ENDPOINT }}"
+  #            export AGRODB_CONNECTIONSTRING="${{ secrets.AGRODB_CONNECTIONSTRING }}"
   #            export APM_SERVICE_NAME="${{ vars.APM_SERVICE_NAME }}"
   #            export ELASTIC_APM_ENABLED="${{ vars.ELASTIC_APM_ENABLED }}"
   #            export ELASTIC_APM_SERVER_URL="${{ vars.ELASTIC_APM_SERVER_URL }}"
   #            export ELASTIC_APM_SECRET_TOKEN="${{ secrets.ELASTIC_APM_SECRET_TOKEN }}"
   #            export ENV="${{ vars.ENV }}"
-  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n fcg-orders-uat -f -            # aplica o configmap com substituição de variáveis
-  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n fcg-orders-uat -f -               # aplica o secret com substituição de variáveis
+  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n agro-users-uat -f -            # aplica o configmap com substituição de variáveis
+  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n agro-users-uat -f -               # aplica o secret com substituição de variáveis
 
   #     - name: Deploy to AKS - UAT
   #       run: |
   #            export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"           # tag da imagem Docker
-  #            # envsubst < Kubernetes/deployment.yaml | kubectl apply -n fcg-orders-uat -f -           # aplica o deployment com substituição de variáveis
-  #            # kubectl apply -f Kubernetes/service.yaml -n fcg-orders-uat                             # aplica o service
-  #            # kubectl rollout status deployment/fcg-orders -n fcg-orders-uat                         # aguarda o rollout completar
+  #            # envsubst < Kubernetes/deployment.yaml | kubectl apply -n agro-users-uat -f -           # aplica o deployment com substituição de variáveis
+  #            # kubectl apply -f Kubernetes/service.yaml -n agro-users-uat                             # aplica o service
+  #            # kubectl rollout status deployment/agro-users -n agro-users-uat                         # aguarda o rollout completar
 
   # deploy-prd:
   #   needs:
@@ -173,37 +157,29 @@ jobs:
   #         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
   #     - name: Set AKS context
-  #       run: az aks get-credentials --resource-group RG_FCG --name aks-fcg-orders --overwrite-existing
+  #       run: az aks get-credentials --resource-group RG_AGRO --name aks-agro-users --overwrite-existing
         
   #     - name: Apply Namespaces
   #       run: kubectl apply -f Kubernetes/namespace.yaml
         
   #     - name: Apply ConfigMap and Secret
   #       run: |
-  #            export FCG_DB_CONNECTION_STRING="${{ secrets.FCG_DB_CONNECTION_STRING }}"
-  #            export FCG_SERVICEBUS_CONNECTION_STRING="${{ secrets.FCG_SERVICEBUS_CONNECTION_STRING }}"
-  #            export FCG_RABBITMQ_CONNECTION_STRING="${{ secrets.FCG_RABBITMQ_CONNECTION_STRING }}" 
-  #            export GAMES_API_ENDPOINT="${{ vars.GAMES_API_ENDPOINT }}"
-  #            export GAMES_API_AUTH_TOKEN="${{ secrets.GAMES_API_AUTH_TOKEN }}"
-  #            export GAMES_API_SUBSCRIPTION_KEY="${{ secrets.GAMES_API_SUBSCRIPTION_KEY }}"
-  #            export NEW_RELIC_LICENSE_KEY="${{ secrets.NEW_RELIC_LICENSE_KEY }}"
-  #            export NEW_RELIC_ENABLED="${{ vars.NEW_RELIC_ENABLED }}"
-  #            export NEW_RELIC_ENDPOINT="${{ vars.NEW_RELIC_ENDPOINT }}"
+  #            export AGRODB_CONNECTIONSTRING="${{ secrets.AGRODB_CONNECTIONSTRING }}"
   #            export APM_SERVICE_NAME="${{ vars.APM_SERVICE_NAME }}"
   #            export ELASTIC_APM_ENABLED="${{ vars.ELASTIC_APM_ENABLED }}"
   #            export ELASTIC_APM_SERVER_URL="${{ vars.ELASTIC_APM_SERVER_URL }}"
   #            export ELASTIC_APM_SECRET_TOKEN="${{ secrets.ELASTIC_APM_SECRET_TOKEN }}"
   #            export ENV="${{ vars.ENV }}"
-  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n fcg-orders -f -            # aplica o configmap com substituição de variáveis
-  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n fcg-orders -f -               # aplica o secret com substituição de variáveis
+  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n agro-users -f -            # aplica o configmap com substituição de variáveis
+  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n agro-users -f -               # aplica o secret com substituição de variáveis
 
   #     - name: Deploy to AKS - PRD
   #       run: |
   #            export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"       # tag da imagem Docker
-  #            envsubst < Kubernetes/deployment.yaml | kubectl apply -n fcg-orders -f -           # aplica o deployment com substituição de variáveis
-  #            kubectl apply -f Kubernetes/service.yaml -n fcg-orders                             # aplica o service
-  #            kubectl rollout status deployment/fcg-orders -n fcg-orders                         # aguarda o rollout completar
+  #            envsubst < Kubernetes/deployment.yaml | kubectl apply -n agro-users -f -           # aplica o deployment com substituição de variáveis
+  #            kubectl apply -f Kubernetes/service.yaml -n agro-users                             # aplica o service
+  #            kubectl rollout status deployment/agro-users -n agro-users                         # aguarda o rollout completar
       
   #     - name: Deploy HPA
   #       run: |
-  #            kubectl apply -f Kubernetes/hpa.yaml -n fcg-orders                                  # aplica o HPA
+  #            kubectl apply -f Kubernetes/hpa.yaml -n agro-users                                  # aplica o HPA
