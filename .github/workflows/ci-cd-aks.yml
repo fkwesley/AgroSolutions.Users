@@ -42,7 +42,7 @@ jobs:
         run: dotnet test AgroSolutions.Users.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx"
 
       - name: Login to Azure Container Registry
-        run: echo ${{ secrets.AZURE_ACR_PASSWORD }} | docker login acrfcg.azurecr.io -u ${{ vars.AZURE_ACR_USERNAME }} --password-stdin
+        run: echo ${{ secrets.AZURE_ACR_PASSWORD }} | docker login acragro.azurecr.io -u ${{ vars.AZURE_ACR_USERNAME }} --password-stdin
 
       - name: Set Docker Image Tag
         id: set_tag
