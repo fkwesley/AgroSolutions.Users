@@ -1,4 +1,4 @@
-﻿# 🎮 AgroSolutions.Users - Hackaton FIAP
+﻿# 🎮 Common.Users - Hackaton FIAP
 
 > API RESTful para gestão de usuários.
 
@@ -113,7 +113,7 @@ Nível 0: POX
 ## 📁 Estrutura do Projeto
 
 ```
-AgroSolutions.Users/
+Common.Users/
 │
 ├── 📂 API/                          # Presentation Layer
 │   ├── Controllers/v1, v2/             # Endpoints versionados
@@ -160,7 +160,7 @@ AgroSolutions.Users/
 ├── 📂 .github/                      # GitHub workflows (CI/CD)
 ├── .gitignore                       # Arquivos ignorados pelo Git
 ├── Dockerfile                       # Imagem Docker da API
-├── AgroSolutions.Users.sln                 # Solution .NET
+├── Common.Users.sln                 # Solution .NET
 ```
 
 ---
@@ -259,8 +259,8 @@ A aplicação possui pipelines de CI/CD completos para automação de build, tes
 
 ```bash
 # 1. Clonar
-git clone https://github.com/fkwesley/AgroSolutions.Users.git
-cd AgroSolutions.Users
+git clone https://github.com/fkwesley/Common.Users.git
+cd Common.Users
 
 # 2. Restaurar dependências
 dotnet restore

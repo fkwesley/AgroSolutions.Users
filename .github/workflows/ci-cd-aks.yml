@@ -1,4 +1,4 @@
-name: CI/CD - AgroSolutions.Users - AKS
+name: CI/CD - Common.Users - AKS
 
 on:
   push:
@@ -24,22 +24,22 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore Dependencies
-        run: dotnet restore AgroSolutions.Users.sln
+        run: dotnet restore Common.Users.sln
 
       - name: Build
-        run: dotnet build AgroSolutions.Users.sln --configuration Release --no-restore
+        run: dotnet build Common.Users.sln --configuration Release --no-restore
         
       - name: Architecture Tests
-        run: dotnet test AgroSolutions.Users.sln --filter "FullyQualifiedName~ArchitectureTests" --configuration Release --no-build --verbosity normal
+        run: dotnet test Common.Users.sln --filter "FullyQualifiedName~ArchitectureTests" --configuration Release --no-build --verbosity normal
 
       - name: Unit Tests
-        run: dotnet test AgroSolutions.Users.sln --filter "FullyQualifiedName~UnitTests" --configuration Release --no-build --verbosity normal
+        run: dotnet test Common.Users.sln --filter "FullyQualifiedName~UnitTests" --configuration Release --no-build --verbosity normal
         
       - name: Integration Tests
-        run: dotnet test AgroSolutions.Users.sln --filter "FullyQualifiedName~IntegrationTests" --configuration Release --no-build --verbosity normal
+        run: dotnet test Common.Users.sln --filter "FullyQualifiedName~IntegrationTests" --configuration Release --no-build --verbosity normal
         
       - name: Code Coverage
-        run: dotnet test AgroSolutions.Users.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test Common.Users.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx"
 
       - name: Login to Azure Container Registry
         run: echo ${{ secrets.AZURE_ACR_PASSWORD }} | docker login acragro.azurecr.io -u ${{ vars.AZURE_ACR_USERNAME }} --password-stdin
@@ -52,13 +52,13 @@ jobs:
           
       - name: Build Docker Image
         run: |
-          docker build -t acragro.azurecr.io/agrosolutions/users/api:latest \
-                       -t acragro.azurecr.io/agrosolutions/users/api:${{ steps.set_tag.outputs.image_tag }} .
+          docker build -t acragro.azurecr.io/common/users/api:latest \
+                       -t acragro.azurecr.io/common/users/api:${{ steps.set_tag.outputs.image_tag }} .
 
       - name: Push Docker Image to ACR
         run: |
-          docker push acragro.azurecr.io/agrosolutions/users/api:latest
-          docker push acragro.azurecr.io/agrosolutions/users/api:${{ steps.set_tag.outputs.image_tag }}
+          docker push acragro.azurecr.io/common/users/api:latest
+          docker push acragro.azurecr.io/common/users/api:${{ steps.set_tag.outputs.image_tag }}
           
   # deploy-dev:
   #   needs: build-test-pushDockerImage
@@ -75,28 +75,28 @@ jobs:
   #         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
   #     - name: Set AKS context
-  #       run: az aks get-credentials --resource-group RG_AGRO --name aks-agro-users --overwrite-existing
+  #       run: az aks get-credentials --resource-group RG_AGRO --name aks-common-users --overwrite-existing
         
   #     - name: Apply Namespaces
   #       run: kubectl apply -f Kubernetes/namespace.yaml
         
   #     - name: Apply ConfigMap and Secret
   #       run: |
-  #            export AGRODB_CONNECTIONSTRING="${{ secrets.AGRODB_CONNECTIONSTRING }}"
+  #            export DB_CONNECTIONSTRING="${{ secrets.DB_CONNECTIONSTRING }}"
   #            export APM_SERVICE_NAME="${{ vars.APM_SERVICE_NAME }}"
   #            export ELASTIC_APM_ENABLED="${{ vars.ELASTIC_APM_ENABLED }}"
   #            export ELASTIC_APM_SERVER_URL="${{ vars.ELASTIC_APM_SERVER_URL }}"
   #            export ELASTIC_APM_SECRET_TOKEN="${{ secrets.ELASTIC_APM_SECRET_TOKEN }}"
   #            export ENV="${{ vars.ENV }}"
-  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n agro-users-dev -f -            # aplica o configmap com substituição de variáveis
-  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n agro-users-dev -f -               # aplica o secret com substituição de variáveis
+  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n common-users-dev -f -            # aplica o configmap com substituição de variáveis
+  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n common-users-dev -f -               # aplica o secret com substituição de variáveis
 
   #     - name: Deploy to AKS - DEV
   #       run: |
   #            export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"           # tag da imagem Docker
-  #            envsubst < Kubernetes/deployment.yaml | kubectl apply -n agro-users-dev -f -           # aplica o deployment com substituição de variáveis
-  #            kubectl apply -f Kubernetes/service.yaml -n agro-users-dev                             # aplica o service
-  #            kubectl rollout status deployment/agro-users -n agro-users-dev                         # aguarda o rollout completar
+  #            envsubst < Kubernetes/deployment.yaml | kubectl apply -n common-users-dev -f -           # aplica o deployment com substituição de variáveis
+  #            kubectl apply -f Kubernetes/service.yaml -n common-users-dev                             # aplica o service
+  #            kubectl rollout status deployment/agro-users -n common-users-dev                         # aguarda o rollout completar
              
   # deploy-uat:
   #   needs:
@@ -115,28 +115,28 @@ jobs:
   #         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
   #     - name: Set AKS context
-  #       run: az aks get-credentials --resource-group RG_AGRO --name aks-agro-users --overwrite-existing
+  #       run: az aks get-credentials --resource-group RG_AGRO --name aks-common-users --overwrite-existing
         
   #     - name: Apply Namespaces
   #       run: kubectl apply -f Kubernetes/namespace.yaml
         
   #     - name: Apply ConfigMap and Secret
   #       run: |
-  #            export AGRODB_CONNECTIONSTRING="${{ secrets.AGRODB_CONNECTIONSTRING }}"
+  #            export DB_CONNECTIONSTRING="${{ secrets.DB_CONNECTIONSTRING }}"
   #            export APM_SERVICE_NAME="${{ vars.APM_SERVICE_NAME }}"
   #            export ELASTIC_APM_ENABLED="${{ vars.ELASTIC_APM_ENABLED }}"
   #            export ELASTIC_APM_SERVER_URL="${{ vars.ELASTIC_APM_SERVER_URL }}"
   #            export ELASTIC_APM_SECRET_TOKEN="${{ secrets.ELASTIC_APM_SECRET_TOKEN }}"
   #            export ENV="${{ vars.ENV }}"
-  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n agro-users-uat -f -            # aplica o configmap com substituição de variáveis
-  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n agro-users-uat -f -               # aplica o secret com substituição de variáveis
+  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n common-users-uat -f -            # aplica o configmap com substituição de variáveis
+  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n common-users-uat -f -               # aplica o secret com substituição de variáveis
 
   #     - name: Deploy to AKS - UAT
   #       run: |
   #            export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"           # tag da imagem Docker
-  #            # envsubst < Kubernetes/deployment.yaml | kubectl apply -n agro-users-uat -f -           # aplica o deployment com substituição de variáveis
-  #            # kubectl apply -f Kubernetes/service.yaml -n agro-users-uat                             # aplica o service
-  #            # kubectl rollout status deployment/agro-users -n agro-users-uat                         # aguarda o rollout completar
+  #            # envsubst < Kubernetes/deployment.yaml | kubectl apply -n common-users-uat -f -           # aplica o deployment com substituição de variáveis
+  #            # kubectl apply -f Kubernetes/service.yaml -n common-users-uat                             # aplica o service
+  #            # kubectl rollout status deployment/agro-users -n common-users-uat                         # aguarda o rollout completar
 
   # deploy-prd:
   #   needs:
@@ -157,29 +157,29 @@ jobs:
   #         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
   #     - name: Set AKS context
-  #       run: az aks get-credentials --resource-group RG_AGRO --name aks-agro-users --overwrite-existing
+  #       run: az aks get-credentials --resource-group RG_AGRO --name aks-common-users --overwrite-existing
         
   #     - name: Apply Namespaces
   #       run: kubectl apply -f Kubernetes/namespace.yaml
         
   #     - name: Apply ConfigMap and Secret
   #       run: |
-  #            export AGRODB_CONNECTIONSTRING="${{ secrets.AGRODB_CONNECTIONSTRING }}"
+  #            export DB_CONNECTIONSTRING="${{ secrets.DB_CONNECTIONSTRING }}"
   #            export APM_SERVICE_NAME="${{ vars.APM_SERVICE_NAME }}"
   #            export ELASTIC_APM_ENABLED="${{ vars.ELASTIC_APM_ENABLED }}"
   #            export ELASTIC_APM_SERVER_URL="${{ vars.ELASTIC_APM_SERVER_URL }}"
   #            export ELASTIC_APM_SECRET_TOKEN="${{ secrets.ELASTIC_APM_SECRET_TOKEN }}"
   #            export ENV="${{ vars.ENV }}"
-  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n agro-users -f -            # aplica o configmap com substituição de variáveis
-  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n agro-users -f -               # aplica o secret com substituição de variáveis
+  #            envsubst < Kubernetes/configmap.yaml | kubectl apply -n common-users -f -            # aplica o configmap com substituição de variáveis
+  #            envsubst < Kubernetes/secret.yaml | kubectl apply -n common-users -f -               # aplica o secret com substituição de variáveis
 
   #     - name: Deploy to AKS - PRD
   #       run: |
   #            export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"       # tag da imagem Docker
-  #            envsubst < Kubernetes/deployment.yaml | kubectl apply -n agro-users -f -           # aplica o deployment com substituição de variáveis
-  #            kubectl apply -f Kubernetes/service.yaml -n agro-users                             # aplica o service
-  #            kubectl rollout status deployment/agro-users -n agro-users                         # aguarda o rollout completar
+  #            envsubst < Kubernetes/deployment.yaml | kubectl apply -n common-users -f -           # aplica o deployment com substituição de variáveis
+  #            kubectl apply -f Kubernetes/service.yaml -n common-users                             # aplica o service
+  #            kubectl rollout status deployment/agro-users -n common-users                         # aguarda o rollout completar
       
   #     - name: Deploy HPA
   #       run: |
-  #            kubectl apply -f Kubernetes/hpa.yaml -n agro-users                                  # aplica o HPA
+  #            kubectl apply -f Kubernetes/hpa.yaml -n common-users                                  # aplica o HPA

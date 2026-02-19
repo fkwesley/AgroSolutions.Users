@@ -14,6 +14,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9CF47860-2CEA-F379-09D8-9AEF27965D12}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4BEAFE8D-8BC1-42B3-A91F-B1675E44C2B0}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Architecture.drawio = docs\Architecture.drawio
+		docs\HACKATHON 8NETT.pdf = docs\HACKATHON 8NETT.pdf
+		docs\infrastructure.png = docs\infrastructure.png
+		docs\infrastructure_v2.png = docs\infrastructure_v2.png
+		docs\README.md = docs\README.md
+		docs\SOLID_Summary.md = docs\SOLID_Summary.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kubernetes", "kubernetes", "{EB01764D-1888-4FF4-927E-FBDBA60FB3F9}"
 	ProjectSection(SolutionItems) = preProject

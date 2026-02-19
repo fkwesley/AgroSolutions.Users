@@ -75,13 +75,13 @@ namespace API.Configurations
         {
             var info = new OpenApiInfo
             {
-                Title = "AgroSolutions.Users.API",
+                Title = "Common.Users.API",
                 Version = description.ApiVersion.ToString(),
-                Description = "Farm Users Management",
+                Description = "Users Management",
                 Contact = new OpenApiContact
                 {
-                    Name = "AgroSolutions Team",
-                    Email = "support@agrosolutions.com"
+                    Name = "Fk Team",
+                    Email = "fk.vieira@hotmail.com"
                 }
             };
 

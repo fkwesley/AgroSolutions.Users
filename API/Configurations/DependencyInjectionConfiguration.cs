@@ -27,8 +27,8 @@ public static class DependencyInjectionConfiguration
 {
     public static WebApplicationBuilder AddDependencyInjection(this WebApplicationBuilder builder)
     {
-        var connectionString = builder.Configuration.GetConnectionString("AgroUsersDbConnection")
-            ?? throw new ArgumentNullException("Connection string 'AgroUsersDbConnection' not found.");
+        var connectionString = builder.Configuration.GetConnectionString("UsersDbConnection")
+            ?? throw new ArgumentNullException("Connection string 'UsersDbConnection' not found.");
 
         var jwtKey = builder.Configuration.GetValue<string>("Jwt:Key");
         var jwtIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer");

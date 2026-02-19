@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: agro-users-config
+  name: common-users-config
 data:
   AspNetCore_Environment: "${ENV}"
   ElasticApm__Enabled: "${ELASTIC_APM_ENABLED}"

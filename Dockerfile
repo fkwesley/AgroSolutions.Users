@@ -9,10 +9,10 @@ WORKDIR /app
 COPY . .
 
 # Restore NuGet packages
-RUN dotnet restore AgroSolutions.Users.sln
+RUN dotnet restore Common.Users.sln
 
 # Build the application in Release mode
-RUN dotnet build AgroSolutions.Users.sln -c Release --no-restore
+RUN dotnet build Common.Users.sln -c Release --no-restore
 
 # Publish the application
 RUN dotnet publish API/API.csproj -c Release -o /app/publish --no-restore

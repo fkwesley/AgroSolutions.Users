@@ -1,12 +1,12 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: agro-users-hpa
+  name: common-users-hpa
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: agro-users
+    name: common-users
 
   minReplicas: 1
   maxReplicas: 10
