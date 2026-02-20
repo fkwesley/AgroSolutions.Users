@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e" pages="4">
     <diagram name="Draft Inicial" id="6k9B3DTurZ5XvG3FuaVE">
-        <mxGraphModel dx="786" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+        <mxGraphModel dx="1026" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -718,7 +718,7 @@
         </mxGraphModel>
     </diagram>
     <diagram name="DDD - Infrastructure" id="6WOO-RW449c1pMr-PzXS">
-        <mxGraphModel dx="4712" dy="-184" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="4388" dy="-321" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -895,7 +895,7 @@
                 <mxCell id="EVojwwnCPxk1JL1xtkqE-48" value="TelemetryDB&lt;br&gt;CosmosDB (noSQL)" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=15;image=img/lib/azure2/databases/Azure_Cosmos_DB.svg;fontFamily=Architects Daughter;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DArchitects%2BDaughter;fontColor=default;fontStyle=0;labelBackgroundColor=none;" parent="1" vertex="1">
                     <mxGeometry x="-1293.89" y="1308.37" width="85.76" height="85.76" as="geometry"/>
                 </mxCell>
-                <object placeholders="1" c4Name="AlertRequired" c4Type="" c4Technology="Queue" c4Description="" label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;%c4Type%&amp;nbsp;%c4Technology%&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#E6E6E6&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="3G3Ko3IyPbr1WJNsrShA-1">
+                <object placeholders="1" c4Name="Notifications" c4Type="" c4Technology="Queue" c4Description="" label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;%c4Type%&amp;nbsp;%c4Technology%&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#E6E6E6&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="3G3Ko3IyPbr1WJNsrShA-1">
                     <mxCell style="shape=cylinder3;size=15;direction=south;whiteSpace=wrap;html=1;boundedLbl=1;rounded=1;labelBackgroundColor=none;fillColor=#bac8d3;fontSize=16;fontColor=default;align=center;strokeColor=#23445d;metaEdit=1;points=[[0.5,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.5,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];resizable=1;fontFamily=Architects Daughter;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DArchitects%2BDaughter;fontStyle=1;sketch=1;jiggle=2;curveFitting=1;verticalAlign=bottom;" parent="1" vertex="1">
                         <mxGeometry x="-1338.8600000000001" y="1618.63" width="175.69" height="78.25" as="geometry"/>
                     </mxCell>
