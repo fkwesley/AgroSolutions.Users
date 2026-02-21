@@ -103,6 +103,7 @@ jobs:
              export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"           # tag da imagem Docker
              envsubst < Kubernetes/deployment.yaml | kubectl apply -n common-users-dev -f -           # aplica o deployment com substituição de variáveis
              kubectl apply -f Kubernetes/service.yaml -n common-users-dev                             # aplica o service
+             kubectl rollout restart deployment/common-users -n common-users-dev                      # força o restart para atualizar o secret/configmap
              kubectl rollout status deployment/common-users -n common-users-dev                         # aguarda o rollout completar
              
   deploy-uat:
@@ -145,12 +146,13 @@ jobs:
              envsubst < Kubernetes/configmap.yaml | kubectl apply -n common-users-uat -f -            # aplica o configmap com substituição de variáveis
              envsubst < Kubernetes/secret.yaml | kubectl apply -n common-users-uat -f -               # aplica o secret com substituição de variáveis
 
-      - name: Deploy to AKS - UAT
-        run: |
-             export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"           # tag da imagem Docker
-             envsubst < Kubernetes/deployment.yaml | kubectl apply -n common-users-uat -f -           # aplica o deployment com substituição de variáveis
-             kubectl apply -f Kubernetes/service.yaml -n common-users-uat                             # aplica o service
-             kubectl rollout status deployment/common-users -n common-users-uat                         # aguarda o rollout completar
+      # - name: Deploy to AKS - UAT
+      #   run: |
+      #        # export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"           # tag da imagem Docker
+      #        # envsubst < Kubernetes/deployment.yaml | kubectl apply -n common-users-uat -f -           # aplica o deployment com substituição de variáveis
+      #        # kubectl apply -f Kubernetes/service.yaml -n common-users-uat                             # aplica o service
+      #        # kubectl rollout restart deployment/common-users -n common-users-uat                      # força o restart para atualizar o secret/configmap
+      #        # kubectl rollout status deployment/common-users -n common-users-uat                         # aguarda o rollout completar
 
   deploy-prd:
     needs:
@@ -199,6 +201,7 @@ jobs:
              export IMAGE_TAG="${{ needs.build-test-pushDockerImage.outputs.image_tag }}"       # tag da imagem Docker
              envsubst < Kubernetes/deployment.yaml | kubectl apply -n common-users -f -           # aplica o deployment com substituição de variáveis
              kubectl apply -f Kubernetes/service.yaml -n common-users                             # aplica o service
+             kubectl rollout restart deployment/common-users -n common-users                      # força o restart para atualizar o secret/configmap
              kubectl rollout status deployment/common-users -n common-users                         # aguarda o rollout completar
       
       - name: Deploy HPA
