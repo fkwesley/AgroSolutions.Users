@@ -37,6 +37,8 @@
     <Folder Include="IntegrationTests\API\Controllers\" />
     <Folder Include="IntegrationTests\API\Security\" />
     <Folder Include="LoadTests\" />
+    <Folder Include="UnitTests\Domain\Events\" />
+    <Folder Include="UnitTests\Domain\ValueObjects\" />
   </ItemGroup>
 
 </Project>

@@ -18,7 +18,7 @@ public class LayerDependencyTests
     public void Domain_Should_NotHaveDependencyOnOtherLayers()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var result = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .ShouldNot()
             .HaveDependencyOnAny(ApplicationNamespace, InfrastructureNamespace, ApiNamespace)
             .GetResult();
@@ -32,7 +32,7 @@ public class LayerDependencyTests
     public void Domain_Should_NotReferenceSystemDataSqlClient()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var result = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .ShouldNot()
             .HaveDependencyOn("System.Data.SqlClient")
             .GetResult();
@@ -46,7 +46,7 @@ public class LayerDependencyTests
     public void Domain_Should_NotReferenceEntityFramework()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var result = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .ShouldNot()
             .HaveDependencyOn("Microsoft.EntityFrameworkCore")
             .GetResult();
@@ -60,7 +60,7 @@ public class LayerDependencyTests
     public void Application_Should_NotHaveDependencyOn_Infrastructure_Or_API()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Application.Interfaces.IOrderService).Assembly)
+        var result = Types.InAssembly(typeof(Application.Interfaces.IUserService).Assembly)
             .ShouldNot()
             .HaveDependencyOnAny(InfrastructureNamespace, ApiNamespace)
             .GetResult();
@@ -74,7 +74,7 @@ public class LayerDependencyTests
     public void Application_Should_OnlyDependOn_Domain()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Application.Interfaces.IOrderService).Assembly)
+        var result = Types.InAssembly(typeof(Application.Interfaces.IUserService).Assembly)
             .That()
             .ResideInNamespace(ApplicationNamespace)
             .ShouldNot()
@@ -90,7 +90,7 @@ public class LayerDependencyTests
     public void Infrastructure_Should_NotHaveDependencyOn_API()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(Infrastructure.Context.OrdersDbContext).Assembly)
+        var result = Types.InAssembly(typeof(Infrastructure.Context.UsersDbContext).Assembly)
             .ShouldNot()
             .HaveDependencyOn(ApiNamespace)
             .GetResult();
@@ -104,14 +104,14 @@ public class LayerDependencyTests
     public void Controllers_Should_NotDirectlyReference_Infrastructure()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var result = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .Should()
             .NotHaveDependencyOn("Infrastructure.Repositories")
             .GetResult();
 
-        var result2 = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var result2 = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .Should()

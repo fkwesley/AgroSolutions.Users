@@ -11,7 +11,7 @@ public class ApiDesignTests
     public void Controllers_Should_Have_ApiController_Attribute()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var result = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .And()
@@ -31,7 +31,7 @@ public class ApiDesignTests
     public void Controllers_Should_Have_Route_Attribute()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var result = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .And()
@@ -51,7 +51,7 @@ public class ApiDesignTests
     public void Controllers_Should_Inherit_ControllerBase()
     {
         // Arrange & Act
-        var result = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var result = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .And()
@@ -69,7 +69,7 @@ public class ApiDesignTests
     public void API_Controllers_Should_Be_In_Versioned_Namespaces()
     {
         // Arrange & Act
-        var types = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var types = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespaceStartingWith("API.Controllers")
             .And()
@@ -93,7 +93,7 @@ public class ApiDesignTests
     public void Controllers_Should_Have_XML_Documentation()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var types = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .And()

@@ -1,6 +1,6 @@
-﻿# 🎮 API.Template - Clean Architecture & Best Practices
+﻿# 🎮 Common.Users - Hackaton FIAP
 
-> Template de API RESTful moderna implementando Clean Architecture, SOLID, DDD e Event-Driven Architecture.
+> API RESTful para gestão de usuários.
 
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![C# 12](https://img.shields.io/badge/C%23-12.0-239120?logo=csharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
@@ -24,7 +24,7 @@
 
 ## 🎯 Visão Geral
 
-Template de referência para APIs RESTful escaláveis e manuteníveis, implementando as melhores práticas de arquitetura de software.
+API RESTful escalável e manutenível, implementando as melhores práticas de arquitetura de software.
 
 ### 🌟 Destaques
 
@@ -113,7 +113,7 @@ Nível 0: POX
 ## 📁 Estrutura do Projeto
 
 ```
-API.Template/
+Common.Users/
 │
 ├── 📂 API/                          # Presentation Layer
 │   ├── Controllers/v1, v2/             # Endpoints versionados
@@ -160,14 +160,14 @@ API.Template/
 ├── 📂 .github/                      # GitHub workflows (CI/CD)
 ├── .gitignore                       # Arquivos ignorados pelo Git
 ├── Dockerfile                       # Imagem Docker da API
-├── API.Template.sln                 # Solution .NET
+├── Common.Users.sln                 # Solution .NET
 ```
 
 ---
 
 ## ✨ Funcionalidades Principais
 
-### 🔹 CRUD de Orders
+### 🔹 CRUD de Users
 - Validações de negócio (duplicação, status, pagamento)
 - Domain Events (OrderCreated, StatusChanged)
 - Paginação com metadados e links HATEOAS
@@ -259,8 +259,8 @@ A aplicação possui pipelines de CI/CD completos para automação de build, tes
 
 ```bash
 # 1. Clonar
-git clone https://github.com/fkwesley/API.Template.git
-cd API.Template
+git clone https://github.com/fkwesley/Common.Users.git
+cd Common.Users
 
 # 2. Restaurar dependências
 dotnet restore

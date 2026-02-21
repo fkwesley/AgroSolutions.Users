@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers.v1
 {
     /// <summary>
-    /// Health Check Controller V1 (⚠️ DEPRECATED - Use V2)
+    /// Health Check Controller V1
     /// </summary>
     [ApiController]
     [Route("v{version:apiVersion}/health")]
-    [ApiVersion("1.0", Deprecated = true)]
+    [ApiVersion("1.0")]
     public class HealthController : ControllerBase
     {
         private readonly IHealthCheckService _healthCheckService;
@@ -24,7 +24,7 @@ namespace API.Controllers.v1
         }
 
         /// <summary>
-        /// Comprehensive health check with all dependencies (Database, Games API, RabbitMQ, Elasticsearch, System)
+        /// Comprehensive health check with all dependencies 
         /// </summary>
         /// <returns>Health status with all component details</returns>
         /// <response code="200">API is healthy or degraded</response>

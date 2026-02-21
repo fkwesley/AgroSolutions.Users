@@ -18,7 +18,7 @@ LoggingConfiguration.ConfigureSerilog(configuration);
 
 try
 {
-    Log.Information("Starting Orders.API");
+    Log.Information("Starting Users.API");
 
     var builder = WebApplication.CreateBuilder(args);
 

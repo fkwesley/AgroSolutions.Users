@@ -17,14 +17,14 @@ namespace Infrastructure.Services.HealthCheck
     /// </summary>
     public class DatabaseHealthCheck : IHealthCheck
     {
-        private readonly OrdersDbContext _dbContext;
+        private readonly UsersDbContext _dbContext;
         private readonly ILogger<DatabaseHealthCheck> _logger;
 
         public string ComponentName => "Database";
         public bool IsCritical => true; // Database é CRÍTICO - se falhar, API retorna 503
 
         public DatabaseHealthCheck(
-            OrdersDbContext dbContext,
+            UsersDbContext dbContext,
             ILogger<DatabaseHealthCheck> logger)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));

@@ -11,7 +11,7 @@ public class TestabilityTests
     public void Services_Should_Have_Constructor_For_Dependency_Injection()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Application.Services.OrderService).Assembly)
+        var types = Types.InAssembly(typeof(Application.Services.UserService).Assembly)
             .That()
             .ResideInNamespace("Application.Services")
             .And()
@@ -31,7 +31,7 @@ public class TestabilityTests
     public void Services_Should_NotHave_Multiple_Public_Constructors()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Application.Services.OrderService).Assembly)
+        var types = Types.InAssembly(typeof(Application.Services.UserService).Assembly)
             .That()
             .ResideInNamespace("Application.Services")
             .And()
@@ -51,7 +51,7 @@ public class TestabilityTests
     public void Domain_Entities_Should_Favor_ExplicitConstructors()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Domain.Entities.Order).Assembly)
+        var types = Types.InAssembly(typeof(Domain.Entities.User).Assembly)
             .That()
             .ResideInNamespace("Domain.Entities")
             .And()
@@ -85,7 +85,7 @@ public class TestabilityTests
     public void Controllers_Should_Only_Depend_On_Service_Interfaces()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(API.Controllers.v2.OrdersController).Assembly)
+        var types = Types.InAssembly(typeof(API.Controllers.v1.UsersController).Assembly)
             .That()
             .ResideInNamespace("API.Controllers")
             .And()
@@ -114,7 +114,7 @@ public class TestabilityTests
     public void Infrastructure_Repositories_Should_Implement_Interface()
     {
         // Arrange
-        var types = Types.InAssembly(typeof(Infrastructure.Context.OrdersDbContext).Assembly)
+        var types = Types.InAssembly(typeof(Infrastructure.Context.UsersDbContext).Assembly)
             .That()
             .ResideInNamespaceMatching("Infrastructure.Repositories.*")
             .And()
@@ -139,7 +139,7 @@ public class TestabilityTests
         var maxStaticClasses = 10; // Ajuste conforme necessário
         
         // Act
-        var staticClasses = Types.InAssembly(typeof(Application.Services.OrderService).Assembly)
+        var staticClasses = Types.InAssembly(typeof(Application.Services.UserService).Assembly)
             .That()
             .AreClasses()
             .And()

@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace API.Configurations
 {
@@ -39,6 +40,15 @@ namespace API.Configurations
 
                 if (parameterDescriptor?.ModelMetadata?.ContainerType != null)
                 {
+                    // Don't remove path (route) parameters even if a property with the
+                    // same name is marked with [JsonIgnore]. Removing route parameters
+                    // makes the Swagger UI omit them, which can lead to clients not
+                    // sending the required route value and causing model validation
+                    // errors like "The UserId field is required.".
+                    if (parameterDescriptor.Source == BindingSource.Path)
+                    {
+                        continue;
+                    }
                     var property = parameterDescriptor.ModelMetadata.ContainerType
                         .GetProperty(parameterDescriptor.ModelMetadata.PropertyName ?? parameterDescriptor.Name);
 

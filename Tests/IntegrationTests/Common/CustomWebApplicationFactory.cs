@@ -19,7 +19,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             // Remove o DbContext real
             var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<OrdersDbContext>));
+                d => d.ServiceType == typeof(DbContextOptions<UsersDbContext>));
 
             if (descriptor != null)
             {
@@ -27,7 +27,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             }
 
             // Adiciona DbContext usando InMemory database
-            services.AddDbContext<OrdersDbContext>(options =>
+            services.AddDbContext<UsersDbContext>(options =>
             {
                 options.UseInMemoryDatabase("InMemoryDbForTesting");
             });
@@ -38,7 +38,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             // Cria escopo para inicializar o banco
             using var scope = serviceProvider.CreateScope();
             var scopedServices = scope.ServiceProvider;
-            var db = scopedServices.GetRequiredService<OrdersDbContext>();
+            var db = scopedServices.GetRequiredService<UsersDbContext>();
 
             // Garante que o banco está criado
             db.Database.EnsureCreated();

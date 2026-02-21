@@ -75,13 +75,13 @@ namespace API.Configurations
         {
             var info = new OpenApiInfo
             {
-                Title = "FCG.Orders.API",
+                Title = "Common.Users.API",
                 Version = description.ApiVersion.ToString(),
-                Description = "API for managing game orders",
+                Description = "Users Management",
                 Contact = new OpenApiContact
                 {
-                    Name = "FCG Team",
-                    Email = "support@fcg.com"
+                    Name = "Fk Team",
+                    Email = "fk.vieira@hotmail.com"
                 }
             };
 
