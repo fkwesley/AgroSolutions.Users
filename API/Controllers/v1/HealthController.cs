@@ -24,7 +24,7 @@ namespace API.Controllers.v1
         }
 
         /// <summary>
-        /// Comprehensive health check with all dependencies 
+        /// Health check with all dependencies 
         /// </summary>
         /// <returns>Health status with all component details</returns>
         /// <response code="200">API is healthy or degraded</response>
